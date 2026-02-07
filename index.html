@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ankdristi - Numerology</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="splash-screen">
+        <div class="logo-circle">A</div>
+        <h2 class="splash-title">ANKDRISTI</h2>
+    </div>
+
+    <div id="home-page" class="container">
+        <h1>Ankdristi</h1>
+        <p class="subtitle">Numerology for Success</p>
+        
+        <div class="auth-link">
+            <a href="#">Login / Register</a>
+        </div>
+
+        <div class="input-group">
+            <label>पूरा नाम</label>
+            <input type="text" id="userName" placeholder="अपना नाम लिखें">
+            <div id="namankDisplay" class="live-calc">नामांक: 0</div>
+        </div>
+
+        <div class="input-group">
+            <label>लिंग</label>
+            <select id="gender">
+                <option value="male">पुरुष</option>
+                <option value="female">महिला</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>जन्म तिथि</label>
+            <input type="date" id="dob">
+        </div>
+
+        <div class="input-group">
+            <label>मोबाइल नंबर</label>
+            <input type="number" id="mobile" placeholder="10 अंकों का नंबर">
+        </div>
+
+        <button class="btn-submit" id="submitBtn">SUBMIT</button>
+    </div>
+
+    <div id="result-page" class="container hidden">
+        <h1>विश्लेषण पेज</h1>
+        <div class="grid-container">
+            <a href="#" class="grid-item">1. जन्मांक</a>
+            <a href="#" class="grid-item">2. भाग्यांक</a>
+            <a href="#" class="grid-item">3. नामांक अनुकूल</a>
+            <a href="#" class="grid-item">4. लोशु ग्रिड</a>
+            <a href="#" class="grid-item">5. व्यक्तित्व और आत्मा</a>
+            <a href="#" class="grid-item">6. मिसिंग नंबर</a>
+            <a href="#" class="grid-item">7. मोबाइल मैचिंग</a>
+            <a href="#" class="grid-item">8. उपाय</a>
+            <a href="#" class="grid-item full-width">9. प्लेन (Planes)</a>
+        </div>
+        <button class="report-btn">अंक ज्योतिष रिपोर्ट प्राप्त करे</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
