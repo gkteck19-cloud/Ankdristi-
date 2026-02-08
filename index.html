@@ -16,6 +16,29 @@
     <div id="home-page" class="container">
         <h1>Ankdristi</h1>
         <p class="subtitle">Numerology for Success</p>
+
+        <div id="auth-page" class="container">
+    <h2 id="auth-title">पंजीकरण (Register)</h2>
+    
+    <div class="input-group">
+        <label>ईमेल (Email)</label>
+        <input type="email" id="auth-email" placeholder="example@email.com" required>
+    </div>
+    
+    <div class="input-group">
+        <label>पासवर्ड (Password)</label>
+        <input type="password" id="auth-password" placeholder="कम से कम 6 अंक" minlength="6" required>
+    </div>
+    
+    <button class="btn-submit" onclick="handleAuth()">प्रवेश करें (Submit)</button>
+    
+    <p style="text-align:center; font-size:0.9em; margin-top:15px; color: rgba(255,255,255,0.8);">
+        <span id="toggle-text">क्या आपका पहले से अकाउंट है?</span> 
+        <br>
+        <a href="javascript:void(0)" onclick="toggleAuthMode()" style="color:var(--gold); font-weight: bold; text-decoration: none;">यहाँ क्लिक करें</a>
+    </p>
+        </div>
+        
         
         <div class="auth-link">
             <a href="#">Login / Register</a>
