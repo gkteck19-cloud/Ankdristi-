@@ -46,6 +46,61 @@ document.getElementById('submitBtn').addEventListener('click', () => {
     }
 });
 
+let isLoginMode = false;
+
+function toggleAuthMode() {
+    isLoginMode = !isLoginMode;
+    const authTitle = document.getElementById('auth-title');
+    const mobileField = document.getElementById('mobile-group');
+    const dobField = document.getElementById('dob-group');
+    const toggleText = document.getElementById('toggle-text');
+
+    if (isLoginMode) {
+        authTitle.innerText = "लॉगिन (Login)";
+        mobileField.style.display = "none";
+        dobField.style.display = "none";
+        toggleText.innerText = "अकाउंट बनाना चाहते हैं?";
+    } else {
+        authTitle.innerText = "पंजीकरण (Register)";
+        mobileField.style.display = "block";
+        dobField.style.display = "block";
+        toggleText.innerText = "क्या पहले से अकाउंट है?";
+    }
+}
+
+async function handleAuth() {
+    const email = document.getElementById('auth-email').value;
+    const password = document.getElementById('auth-password').value;
+    const mobile = document.getElementById('auth-mobile').value;
+    const dob = document.getElementById('auth-dob').value;
+
+    if (!email || !password) {
+        alert("कृपया ईमेल और पासवर्ड भरें।");
+        return;
+    }
+
+    try {
+        if (isLoginMode) {
+            await firebase.auth().signInWithEmailAndPassword(email, password);
+            alert("सफलतापूर्वक लॉगिन हुआ!");
+        } else {
+            // रजिस्ट्रेशन
+            const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+            const user = userCredential.user;
+
+            // Firestore में अतिरिक्त जानकारी सेव करें
+            await db.collection("users").doc(user.uid).set({
+                email: email,
+                mobile: mobile,
+                dob: dob,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            alert("अकाउंट सफलतापूर्वक बन गया!");
+        }
+    } catch (error) {
+        alert("त्रुटि: " + error.message);
+    }
+                                           }
 
 // 1. Splash Screen Timeout
 window.addEventListener('load', () => {
