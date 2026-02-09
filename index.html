@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ankdristi - Numerology for Success</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <meta name="theme-color" content="#0f172a">
+</head>
+<body>
+
+    <div id="splash-screen">
+        <div class="app-logo-container">
+            <img src="logo.png" alt="Ankdristi Logo" class="main-logo-img">
+        </div>
+        <h1 class="gold-text">Ankdristi</h1>
+        <p style="color: #94a3b8; letter-spacing: 2px;">Numerology for Success</p>
+        <div class="loader-line"></div>
+    </div>
+
+    <div class="app-container">
+        <header>
+            <div class="header-top">
+                <h1 class="gold-text">Ankdristi</h1>
+                <div class="auth-link" style="text-align: right;">
+                    <a href="javascript:void(0)" id="open-auth-btn" style="color:var(--gold); text-decoration:none; font-size:0.8em;">Login / Register</a>
+                </div>
+            </div>
+            <p class="tagline">अंकों की दिव्य दृष्टि</p>
+        </header>
+
+        <div id="auth-page" class="container hidden">
+            <h2 id="auth-title">पंजीकरण (Register)</h2>
+            
+            <div class="input-group">
+                <label>ईमेल (Email)</label>
+                <input type="email" id="auth-email" placeholder="example@email.com" required>
+            </div>
+
+            <div id="mobile-group" class="input-group">
+                <label>मोबाइल नंबर</label>
+                <input type="number" id="auth-mobile" placeholder="10 अंकों का नंबर">
+            </div>
+
+            <div id="dob-group" class="input-group">
+                <label>जन्मतिथि (Date of Birth)</label>
+                <input type="date" id="auth-dob" required>
+            </div>
+            
+            <div class="input-group">
+                <label>पासवर्ड (Password)</label>
+                <input type="password" id="auth-password" placeholder="कम से कम 6 अंक" minlength="6" required>
+            </div>
+
+            <button class="btn-submit" onclick="handleAuth()">सबमिट करें</button>
+            
+            <p style="text-align:center; font-size:0.85em; margin-top:15px;">
+                <span id="toggle-text">क्या पहले से अकाउंट है?</span> 
+                <a href="javascript:void(0)" onclick="toggleAuthMode()" style="color:var(--gold); font-weight:bold;">यहाँ क्लिक करें</a>
+            </p>
+            <button class="report-btn" onclick="closeAuth()" style="margin-top:10px; border:none; background:none; font-size:0.8em;">← वापस जाएं</button>
+        </div>
+
+        <div id="home-page" class="container">
+            <div style="text-align: center;">
+                <img src="logo.png" alt="Logo" style="width: 80px; margin-bottom: 10px;">
+            </div>
+            
+            <div class="input-group">
+                <label>पूरा नाम</label>
+                <input type="text" id="userName" placeholder="अपना नाम लिखें">
+                <div id="namankDisplay" class="live-calc">नामांक: 0</div>
+            </div>
+
+            <div class="input-group">
+                <label>लिंग</label>
+                <select id="gender">
+                    <option value="male">पुरुष</option>
+                    <option value="female">महिला</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>जन्म तिथि</label>
+                <input type="date" id="dob">
+            </div>
+
+            <div class="input-group">
+                <label>मोबाइल नंबर</label>
+                <input type="number" id="mobile" placeholder="10 अंकों का नंबर">
+            </div>
+
+            <button class="btn-submit" id="submitBtn">SUBMIT</button>
+        </div>
+
+        <div id="result-page" class="container hidden">
+            <h1>विश्लेषण पेज</h1>
+            <div class="grid-container">
+                <a href="#" class="grid-item">1. जन्मांक</a>
+                <a href="#" class="grid-item">2. भाग्यांक</a>
+                <a href="#" class="grid-item">3. नामांक अनुकूल</a>
+                <a href="#" class="grid-item">4. लोशु ग्रिड</a>
+                <a href="#" class="grid-item">5. व्यक्तित्व और आत्मा</a>
+                <a href="#" class="grid-item">6. मिसिंग नंबर</a>
+                <a href="#" class="grid-item">7. मोबाइल मैचिंग</a>
+                <a href="#" class="grid-item">8. उपाय</a>
+                <a href="#" class="grid-item full-width">9. प्लेन (Planes)</a>
+            </div>
+            <button class="report-btn" onclick="location.reload()">दोबारा जांचें</button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
