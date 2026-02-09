@@ -102,21 +102,19 @@ async function handleAuth() {
     }
                                            }
 
-// 1. // स्प्लैश स्क्रीन को हटाने का नया और पक्का तरीका
-document.addEventListener('DOMContentLoaded', () => {
+// 1. स्प्लैश स्क्रीन टाइमर
+window.addEventListener('load', () => {
     setTimeout(() => {
         const splash = document.getElementById('splash-screen');
         if (splash) {
             splash.style.opacity = '0';
             setTimeout(() => {
                 splash.style.display = 'none';
-                // स्प्लैश गायब होने के बाद होम पेज दिखाएँ
-                const homePage = document.getElementById('home-page');
-                if (homePage) homePage.classList.remove('hidden');
-            }, 800); // गायब होने का ट्रांजिशन टाइम
+            }, 800);
         }
-    }, 3000); // 3 सेकंड तक स्प्लैश दिखेगा
+    }, 2500);
 });
+
 
 
 // 2. Chaldean Numerology Values
