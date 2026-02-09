@@ -13,29 +13,19 @@ body {
 }
 
 /* Splash Screen */
-#splash-screen {
-    position: fixed;
-    width: 100%; height: 100vh;
-    background: var(--primary-blue);
-    display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    z-index: 100; transition: opacity 0.8s;
-}
-
-.logo-circle {
-    width: 120px; height: 120px;
+.main-logo {
+    width: 150px; /* मोबाइल स्क्रीन के लिए सही साइज */
+    height: auto;
     border-radius: 50%;
-    background: radial-gradient(circle, var(--gold) 0%, transparent 75%);
-    box-shadow: 0 0 40px var(--gold-glow);
-    display: flex; justify-content: center; align-items: center;
-    font-size: 60px; font-weight: bold; color: var(--primary-blue);
-    animation: pulse 2s infinite;
+    box-shadow: 0 0 30px var(--gold-glow); /* लोगो के चारों ओर गोल्डन चमक */
+    margin-bottom: 20px;
 }
 
-@keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.1); opacity: 1; }
+/* स्प्लैश स्क्रीन को और प्रीमियम बनाने के लिए */
+#splash-screen {
+    background: radial-gradient(circle, #1a2a44 0%, #0a192f 100%);
 }
+
 
 .splash-title { color: var(--gold); margin-top: 20px; letter-spacing: 2px; }
 
