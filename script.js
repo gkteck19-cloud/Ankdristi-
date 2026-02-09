@@ -159,3 +159,52 @@ document.getElementById('submitBtn').addEventListener('click', () => {
     document.getElementById('home-page').classList.add('hidden');
     document.getElementById('result-page').classList.remove('hidden');
 });
+// Auth Mode: 'register' or 'login'
+let isLoginMode = false;
+
+function toggleAuthMode() {
+    isLoginMode = !isLoginMode;
+    document.getElementById('auth-title').innerText = isLoginMode ? "Login" : "Register";
+    document.getElementById('toggle-text').innerText = isLoginMode ? "Need an account?" : "Already have an account?";
+}
+
+async function handleAuth() {
+    const email = document.getElementById('auth-email').value;
+    const password = document.getElementById('auth-password').value;
+
+    if (!email || !password) {
+        alert("Please enter both email and password.");
+        return;
+    }
+
+    try {
+        if (isLoginMode) {
+            // Login Logic
+            await firebase.auth().signInWithEmailAndPassword(email, password);
+            alert("Logged in successfully!");
+        } else {
+            // Registration Logic
+            await firebase.auth().createUserWithEmailAndPassword(email, password);
+            alert("Account created successfully!");
+        }
+        // Auth सफल होने के बाद होम पेज दिखाएँ
+        document.getElementById('auth-page').classList.add('hidden');
+        document.getElementById('home-page').classList.remove('hidden');
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+// User की स्थिति पर नज़र रखें (Login है या नहीं)
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        // अगर यूजर पहले से लॉगिन है, तो सीधे होम पेज दिखाएँ
+        document.getElementById('auth-page').classList.add('hidden');
+        document.getElementById('home-page').classList.remove('hidden');
+    } else {
+        // लॉगिन नहीं है तो ऑथ पेज दिखाएँ
+        document.getElementById('auth-page').classList.remove('hidden');
+        document.getElementById('home-page').classList.add('hidden');
+    }
+});
+
