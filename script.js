@@ -1,19 +1,25 @@
-// 1. Firebase Initialize
+// 1. Firebase Imports (Modular SDK)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+// आपका नया कॉन्फ़िगरेशन
 const firebaseConfig = {
-  apiKey: "AIzaSyCJIfQ-UTS6ns0pRO0nH4wzUQNnBB4_plc",
-  authDomain: "ankdristi-37446610-e3f3b.firebaseapp.com",
-  projectId: "ankdristi-37446610-e3f3b",
-  storageBucket: "ankdristi-37446610-e3f3b.firebasestorage.app",
-  messagingSenderId: "216216154216",
-  appId: "1:216216154216:web:c6d5ffde5dc4faf13dcbdd"
+  apiKey: "AIzaSyDKBVzKZqyqNE9PJRHfPPrbG85eX9tUFj0",
+  authDomain: "ankdristi.firebaseapp.com",
+  projectId: "ankdristi",
+  storageBucket: "ankdristi.firebasestorage.app",
+  messagingSenderId: "751636757575",
+  appId: "1:751636757575:web:6b15c6df18e04ed01b8562",
+  measurementId: "G-DPJ3CL8XED"
 };
 
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
-const db = firebase.firestore();
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-// 2. Splash Screen Logic
+// 2. Splash Screen & Auth Status
 window.addEventListener('load', () => {
     setTimeout(() => {
         const splash = document.getElementById('splash-screen');
@@ -21,7 +27,6 @@ window.addEventListener('load', () => {
             splash.style.opacity = '0';
             setTimeout(() => {
                 splash.style.display = 'none';
-                // लॉगिन स्थिति के आधार पर पेज दिखाएँ
                 checkUserStatus();
             }, 800);
         }
@@ -29,7 +34,7 @@ window.addEventListener('load', () => {
 });
 
 function checkUserStatus() {
-    firebase.auth().onAuthStateChanged((user) => {
+    onAuthStateChanged(auth, (user) => {
         if (user) {
             document.getElementById('home-page').classList.remove('hidden');
             document.getElementById('auth-page').classList.add('hidden');
@@ -39,7 +44,7 @@ function checkUserStatus() {
     });
 }
 
-// 3. Chaldean Numerology & Live Calc
+// 3. Chaldean Numerology Logic
 const chaldeanMap = {
     a:1, i:1, j:1, q:1, y:1, b:2, k:2, r:2,
     c:3, g:3, l:3, s:3, d:4, m:4, t:4,
@@ -69,10 +74,9 @@ function reduceToSingle(n) {
     return n;
 }
 
-// 4. Loshu Grid Logic (यह Result Page के लिए जरूरी है)
-function generateLoshuGrid(dob) {
+// 4. Loshu Grid Logic
+window.generateLoshuGrid = function(dob) {
     const digits = dob.replace(/\D/g, '').split('');
-    // सभी सेल को पहले खाली करें (अगर HTML में cell IDs हैं)
     const cells = [1,2,3,4,5,6,7,8,9];
     cells.forEach(id => {
         const cell = document.getElementById(`cell-${id}`);
@@ -87,53 +91,15 @@ function generateLoshuGrid(dob) {
     });
 }
 
-// 5. Navigation & Result Trigger
-const submitBtn = document.getElementById('submitBtn');
-if(submitBtn) {
-    submitBtn.addEventListener('click', () => {
-        const name = nameInput.value;
-        const dobVal = document.getElementById('dob').value;
-
-        if (!name || !dobVal) {
-            alert("कृपया नाम और जन्म तिथि दर्ज करें।");
-            return;
-        }
-
-        // ग्रिड भरें
-        generateLoshuGrid(dobVal);
-        
-        // पेज बदलें
-        document.getElementById('home-page').classList.add('hidden');
-        document.getElementById('result-page').classList.remove('hidden');
-        window.scrollTo(0,0);
-    });
-}
-
-// 6. Auth Toggle & Handle
-let isLoginMode = false;
-const openAuthBtn = document.getElementById('open-auth-btn');
-
-if(openAuthBtn) {
-    openAuthBtn.addEventListener('click', () => {
-        document.getElementById('home-page').classList.add('hidden');
-        document.getElementById('auth-page').classList.remove('hidden');
-    });
-}
-
-function closeAuth() {
-    document.getElementById('auth-page').classList.add('hidden');
-    document.getElementById('home-page').classList.remove('hidden');
-}
-
-function toggleAuthMode() {
+// 5. Auth Functions (Global scope के लिए window का इस्तेमाल)
+window.toggleAuthMode = function() {
     isLoginMode = !isLoginMode;
     document.getElementById('auth-title').innerText = isLoginMode ? "लॉगिन (Login)" : "पंजीकरण (Register)";
     document.getElementById('mobile-group').style.display = isLoginMode ? "none" : "block";
     document.getElementById('dob-group').style.display = isLoginMode ? "none" : "block";
-    document.getElementById('toggle-text').innerText = isLoginMode ? "अकाउंट बनाना चाहते हैं?" : "क्या पहले से अकाउंट है?";
-}
+};
 
-async function handleAuth() {
+window.handleAuth = async function() {
     const email = document.getElementById('auth-email').value;
     const password = document.getElementById('auth-password').value;
     
@@ -144,17 +110,32 @@ async function handleAuth() {
 
     try {
         if (isLoginMode) {
-            await firebase.auth().signInWithEmailAndPassword(email, password);
+            await signInWithEmailAndPassword(auth, email, password);
         } else {
             const mobile = document.getElementById('auth-mobile').value;
             const dob = document.getElementById('auth-dob').value;
-            const userCred = await firebase.auth().createUserWithEmailAndPassword(email, password);
-            await db.collection("users").doc(userCred.user.uid).set({
-                email, mobile, dob, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            const userCred = await createUserWithEmailAndPassword(auth, email, password);
+            await setDoc(doc(db, "users", userCred.user.uid), {
+                email, mobile, dob, createdAt: serverTimestamp()
             });
         }
-        closeAuth();
+        document.getElementById('auth-page').classList.add('hidden');
+        document.getElementById('home-page').classList.remove('hidden');
     } catch (error) {
         alert(error.message);
     }
+};
+
+// 6. Navigation
+const submitBtn = document.getElementById('submitBtn');
+if(submitBtn) {
+    submitBtn.addEventListener('click', () => {
+        const name = nameInput.value;
+        const dobVal = document.getElementById('dob').value;
+        if (!name || !dobVal) { alert("विवरण भरें"); return; }
+        
+        generateLoshuGrid(dobVal);
+        document.getElementById('home-page').classList.add('hidden');
+        document.getElementById('result-page').classList.remove('hidden');
+    });
 }
